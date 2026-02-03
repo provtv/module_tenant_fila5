@@ -51,3 +51,15 @@ $tenant = app(TenantService::class)->getCurrent();
 **🔄 Ultimo aggiornamento**: 31 Gennaio 2026
 **📦 Versione**: 1.2.0
 **✅ PHPStan level 10**: Compliance verificata (0 errori)
+
+## 🚀 Release su GitHub
+Le release sono basate su tag Git e possono includere release notes generate automaticamente.
+Workflow locale: `.github/workflows/release.yml`.
+
+
+## 📄 License & Authors
+
+**Authors:**
+- Marco Xot <marco.sottana@gmail.com>
+
+**License:** MIT
