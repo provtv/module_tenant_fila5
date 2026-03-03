@@ -15,30 +15,57 @@ return [
     'fields' => [
         'domain' => [
             'label' => 'Domain',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'domains' => [
             'label' => 'Domains',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'list' => [
             'label' => 'Domain-Liste',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'create' => [
             'label' => 'Domain erstellen',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'edit' => [
             'label' => 'Domain bearbeiten',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'destroy' => [
             'label' => 'Domain löschen',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'name' => [
             'label' => 'Name',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'rating' => [
             'label' => 'rating',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'toggleColumns' => [
             'label' => 'toggleColumns',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
     ],
     'actions' => [
@@ -61,4 +88,6 @@ return [
             'label' => 'domain.plural.model',
         ],
     ],
+    'label' => 'Missing Label',
+    'plural_label' => 'Missing Plural label',
 ];

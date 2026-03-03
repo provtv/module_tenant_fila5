@@ -15,33 +15,63 @@ return [
     'fields' => [
         'domain' => [
             'label' => 'Dominio',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'domains' => [
             'label' => 'Domini',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'list' => [
             'label' => 'Lista Domini',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'create' => [
             'label' => 'Crea Dominio',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'edit' => [
             'label' => 'Modifica Dominio',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'destroy' => [
             'label' => 'Elimina Dominio',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'name' => [
             'label' => 'Nome',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'rating' => [
             'label' => 'rating',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'toggleColumns' => [
             'label' => 'toggleColumns',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
         'reorderRecords' => [
             'label' => 'reorderRecords',
+            'tooltip' => '',
+            'helper_text' => '',
+            'description' => '',
         ],
     ],
     'actions' => [
@@ -68,4 +98,6 @@ return [
             'label' => 'domain.plural.model',
         ],
     ],
+    'label' => 'Domain',
+    'plural_label' => 'Domain (Plurale)',
 ];

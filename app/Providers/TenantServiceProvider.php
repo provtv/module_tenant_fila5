@@ -69,11 +69,6 @@ class TenantServiceProvider extends XotBaseServiceProvider
 
     public function registerDB(): void
     {
-        // During testing, skip all tenant database setup to use default SQLite configuration
-        if ($this->app->environment('testing')) {
-            return;
-        }
-
         Schema::defaultStringLength(191);
 
         if (Request::has('act') && Request::input('act') === 'migrate') {
@@ -108,19 +103,28 @@ class TenantServiceProvider extends XotBaseServiceProvider
             }
 
             $name = $module->getSnakeName();
-            // *
+            $upperName = strtoupper($name);
+
             if (isset($connections[$default]) && ! isset($connections[$name])) {
-                // @var array|float|int|string|null $defaultConnection
-                $defaultConnection = $connections[$default];
-                $connections[$name] = $defaultConnection;
+                /** @var array<string, mixed> $moduleConfig */
+                $moduleConfig = $connections[$default];
+                
+                // Note: Module-specific env variables disabled for SQLite compatibility
+                // If needed, uncomment and adjust for your database driver:
+                // $moduleConfig['database'] = env("DB_DATABASE_{$upperName}", $moduleConfig['database']);
+                // $moduleConfig['username'] = env("DB_USERNAME_{$upperName}", $moduleConfig['username']);
+                // $moduleConfig['password'] = env("DB_PASSWORD_{$upperName}", $moduleConfig['password']);
+                // $moduleConfig['host'] = env("DB_HOST_{$upperName}", $moduleConfig['host'] ?? '127.0.0.1');
+                // $moduleConfig['port'] = env("DB_PORT_{$upperName}", $moduleConfig['port'] ?? '3306');
+                
+                $connections[$name] = $moduleConfig;
             }
-            // */
         }
 
         $data = Arr::set($data, 'connections', $connections);
         Config::set('database', $data);
 
-        // Skip purge/reconnect during testing to avoid connection issues
+        // Skip purge/reconnect during testing to preserve test DB mappings
         if (! $this->app->environment('testing')) {
             // Call to a member function prepare() on null
             // Database connection [mysql] not configured.

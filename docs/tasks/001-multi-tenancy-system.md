@@ -232,6 +232,5 @@ The Tenant module needs robust multi-tenancy support for serving multiple custom
 
 ---
 
-**Created**: 2026-01-31
 **Status**: Pending
 **Assignee**: TBD

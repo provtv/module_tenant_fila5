@@ -15,37 +15,21 @@ use Modules\Xot\Tests\CreatesApplication;
  * Base test case for Tenant module.
  *
  * Uses MySQL from .env.testing.
+ * All module connections are mapped by TenantServiceProvider.
+ * Migrations must be run ONCE externally: php artisan migrate --env=testing
+ * DatabaseTransactions handles rollback between tests.
  */
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use DatabaseTransactions;
 
-    protected static bool $migrated = false;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (! self::$migrated) {
-            $this->artisan('migrate:fresh', [
-                '--force' => true,
-            ]);
-
-            $this->artisan('module:migrate', [
-                '--force' => true,
-            ]);
-
-            self::$migrated = true;
-        }
-    }
-
     protected function getPackageProviders($app): array
     {
         return [
-            TenantServiceProvider::class,
-            UserServiceProvider::class,
             XotServiceProvider::class,
+            UserServiceProvider::class,
+            TenantServiceProvider::class,
         ];
     }
 }
