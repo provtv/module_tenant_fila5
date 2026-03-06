@@ -9,6 +9,14 @@ Rendere la scalabilità dell'isolamento dei dati un processo immediato e traspar
 
 ### Fase 1: Stabilità e Standard (In Corso)
 - [x] PHPStan Level 10 Compliance.
+<<<<<<< HEAD
+- [x] Implementazione del pattern DRY per i metodi dei trait (2026-03-02)
+||||||| parent of abc100e (.)
+- [ ] Rimozione di tutti i file `EMPTY` (0-1 byte) nella cartella docs.
+- [ ] Implementazione del **Tenant Cluster** per l'amministrazione centralizzata.
+- [ ] Supporto completo per **Laravel 12 Service Providers** per la risoluzione tenant.
+=======
+>>>>>>> abc100e (.)
 - [ ] Implementazione del **Cluster Tenant** per l'amministrazione centralizzata.
 - [ ] Rimozione sistematica dei file obsoleti e pulizia dei docs vuoti.
 - [ ] Supporto completo per i Service Provider di Laravel 12 nella risoluzione dei tenant.
@@ -25,10 +33,21 @@ Rendere la scalabilità dell'isolamento dei dati un processo immediato e traspar
 
 ## ✅ Checklist Qualità
 - [x] PHPStan Level 10.
+<<<<<<< HEAD
+- [x] DRY Principle per i metodi dei trait implementato (2026-03-02)
+- [ ] Isolamento dei dati verificato tramite test unitari e di integrazione.
+- [ ] Assenza di dipendenze circolari tra il modulo Tenant e il resto del sistema.
+- [ ] Documentazione agnostica aggiornata in `docs/`.
+
+---
+**
+||||||| parent of abc100e (.)
+=======
 - [ ] Isolamento dei dati verificato tramite test unitari e di integrazione.
 - [ ] Assenza di dipendenze circolari tra il modulo Tenant e il resto del sistema.
 - [ ] Documentazione agnostica aggiornata in `docs/`.
 =======
+>>>>>>> abc100e (.)
 # Tenant Module Roadmap
 
 "Espandersi senza confini: la scalabilità dell'isolamento."
@@ -64,7 +83,7 @@ Rendere la scalabilità dell'isolamento dei dati un processo immediato e traspar
 - [ ] Zero dipendenze circolari tra Tenant e altri moduli core.
 
 ---
-**Ultimo aggiornamento**: 31 Gennaio 2026
+**
 >>>>>>> aa416e4 (.)
 =======
 - [ ] Isolamento dei dati verificato tramite test unitari e di integrazione.
