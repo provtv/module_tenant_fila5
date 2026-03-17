@@ -17,7 +17,6 @@ use Modules\Xot\Providers\XotBaseServiceProvider;
 use Nwidart\Modules\Facades\Module;
 use Nwidart\Modules\Laravel\Module as LaravelModule;
 use Override;
-use PDO;
 
 class TenantServiceProvider extends XotBaseServiceProvider
 {
@@ -109,7 +108,7 @@ class TenantServiceProvider extends XotBaseServiceProvider
             if (isset($connections[$default]) && ! isset($connections[$name])) {
                 /** @var array<string, mixed> $moduleConfig */
                 $moduleConfig = $connections[$default];
-
+                
                 // Note: Module-specific env variables disabled for SQLite compatibility
                 // If needed, uncomment and adjust for your database driver:
                 // $moduleConfig['database'] = env("DB_DATABASE_{$upperName}", $moduleConfig['database']);
@@ -117,12 +116,64 @@ class TenantServiceProvider extends XotBaseServiceProvider
                 // $moduleConfig['password'] = env("DB_PASSWORD_{$upperName}", $moduleConfig['password']);
                 // $moduleConfig['host'] = env("DB_HOST_{$upperName}", $moduleConfig['host'] ?? '127.0.0.1');
                 // $moduleConfig['port'] = env("DB_PORT_{$upperName}", $moduleConfig['port'] ?? '3306');
-
+                
                 $connections[$name] = $moduleConfig;
             }
         }
 
         // Create test database connections during testing
+        if ($this->app->environment('testing')) {
+            // Create test database connections based on environment variables
+            $testConnections = [];
+            
+            // Create test connection for main database
+            $testConnections['<nome progetto>_data_test'] = [
+                'driver' => 'mysql',
+                'url' => env('DB_URL'),
+                'host' => env('DB_HOST', '127.0.0.1'),
+                'port' => env('DB_PORT', '3306'),
+                'database' => '<nome progetto>_data_test',
+                'username' => env('DB_USERNAME', 'root'),
+                'password' => env('DB_PASSWORD', ''),
+                'unix_socket' => env('DB_SOCKET', ''),
+                'charset' => env('DB_CHARSET', 'utf8mb4'),
+                'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+                'prefix' => '',
+                'prefix_indexes' => true,
+                'strict' => true,
+                'engine' => null,
+                'options' => extension_loaded('pdo_mysql')
+                    ? array_filter([
+                        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                    ]) : [],
+            ];
+            
+            // Create test connection for user database
+            $testConnections['<nome progetto>_user_test'] = [
+                'driver' => 'mysql',
+                'url' => env('DB_URL'),
+                'host' => env('DB_HOST', '127.0.0.1'),
+                'port' => env('DB_PORT', '3306'),
+                'database' => '<nome progetto>_user_test',
+                'username' => env('DB_USERNAME_USER', 'root'),
+                'password' => env('DB_PASSWORD_USER', ''),
+                'unix_socket' => env('DB_SOCKET', ''),
+                'charset' => env('DB_CHARSET', 'utf8mb4'),
+                'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+                'prefix' => '',
+                'prefix_indexes' => true,
+                'strict' => true,
+                'engine' => null,
+                'options' => extension_loaded('pdo_mysql')
+                    ? array_filter([
+                        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                    ]) : [],
+            ];
+            
+            // Merge test connections with existing connections
+            $connections = array_merge($connections, $testConnections);
+        }
+
         $data = Arr::set($data, 'connections', $connections);
         Config::set('database', $data);
 

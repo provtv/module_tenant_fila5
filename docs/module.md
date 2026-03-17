@@ -195,7 +195,7 @@ Tenant Detection → Configuration Load → Bootstrap → Response
 1. **Advanced Analytics**
    - No tenant behavior analytics
    - Missing performance comparisons
-   - No usage predictions
+   - No usage <nome progetto>ions
    - Missing optimization recommendations
 
 2. **Integration Features**

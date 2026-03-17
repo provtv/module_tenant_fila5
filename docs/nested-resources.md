@@ -189,4 +189,4 @@ Following the documented approach in `Modules/UI/docs/filament/nested-resource.m
 ### 3. Cross-module Tenant Analytics
 - Nested resource usage analytics across modules
 - Tenant performance metrics
-- Predictive analytics for tenant growth and needs
+- <nome progetto>ive analytics for tenant growth and needs

@@ -19,9 +19,9 @@ Questo documento serve come indice centrale per il modulo Tenant, fornendo una g
 - **Migrazioni Automatiche**: Migrazioni automatiche per nuovi tenant
 
 ## Collegamenti Correlati
-- [Documentazione Generale <nome progetto>](../../../../docs/readme.md)
-- [Collegamenti Documentazione](../../../../docs/collegamenti-documentazione.md)
-- [Standard di Documentazione](../../../../docs/documentation_standards.md)
+- [Documentazione Generale <nome progetto>](../../../../../docs/readme.md)
+- [Collegamenti Documentazione](../../../../../docs/collegamenti-documentazione.md)
+- [Standard di Documentazione](../../../../../docs/documentation_standards.md)
 - [Modulo Xot](../../xot/docs/readme.md)
 - [Modulo Lang](../../lang/docs/readme.md)
 - [Modulo UI](../../ui/docs/readme.md)
@@ -70,6 +70,7 @@ Questo documento serve come indice centrale per il modulo Tenant, fornendo una g
 
 ### Testing e Qualità
 - [PHPStan Level 10](./phpstan/index.md) - Correzioni per PHPStan Level 10
+- [PHPStan Cluster 2026-03-10](./phpstan-cluster-2026-03-10.md) - Factory `DatabaseConfig` e modello canonico mancante
 - [Testing](./testing.md) - Strategie e approcci per il testing
 - [Test Multi-Tenant](./multi-tenant-testing.md) - Test specifici per ambiente multi-tenant
 
@@ -157,7 +158,7 @@ Questa documentazione viene aggiornata regolarmente. Prima di apportare modifich
 - **Gennaio 2025**: Risoluzione sistematica di tutti i conflitti Git nei file di documentazione
 - Il file `lang/it/tenant_theme.php` è stato risolto manualmente mantenendo PSR-12, strict_types, array short syntax e solo chiavi effettive, come richiesto dagli standard PHPStan livello 10
 - **Filosofia di risoluzione**: Approccio olistico con analisi manuale approfondita, mantenimento integrità architetturale, documentazione bidirezionale aggiornata
-- Vedi anche: [../../../../docs/README.md](../../../../docs/readme.md)
+- Vedi anche: [../../../../../docs/README.md](../../../../../docs/readme.md)
 - Per dettagli sulle scelte architetturali e funzionali, consultare la doc globale e la sezione "Standard e Traduzioni".
 
-*
+*Ultimo aggiornamento: Gennaio 2025*
