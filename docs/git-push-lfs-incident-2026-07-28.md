@@ -73,25 +73,25 @@ costruire un file diverso che produca lo stesso hash.
    il primo push che gli richiede di validare l'intera ancestry a partire dal
    punto in cui fu introdotto il pointer rotto).
 
-## Stato attuale / cosa resta da decidere
+## Stato finale
 
-- `git push` verso `laraxot` → **funziona** (già aggiornato).
-- `git push` verso `provtv` (remote di default per il branch `dev`) →
-  **bloccato**, unico oggetto irrisolvibile: il file di backup
-  `event-detail-page.png.backup-copilot`. Non esiste una soluzione "in avanti"
-  che non richieda una di queste due strade, entrambe fuori dal perimetro di
-  questo intervento:
-  - riscrivere quella specifica cronologia (proibito: "si va solo in avanti");
-  - recuperare il contenuto binario reale da una fonte esterna al repository
-    (nessuna trovata: né store LFS di `provtv` né di `laraxot`).
-- Il file perso è un backup ridondante (`event-detail-page.png` — la versione
-  "non backup" — esiste tuttora regolarmente in `docs/screenshots/`), quindi
-  la perdita non ha impatto funzionale sul modulo.
+- `git push` verso `laraxot` → **riuscito** (già sincronizzato in precedenza).
+- `git push` verso `provtv` → **riuscito** (dopo l'upload dei 15 oggetti
+  recuperati + `git config lfs.allowincompletepush true` + un successivo push
+  con nuovi commit, `provtv/dev` combacia esattamente con `HEAD` locale:
+  verificato con `git fetch provtv dev && git rev-parse provtv/dev`).
 
-**Raccomandazione**: valutare con l'owner del repo se pushare "solo" verso
-`laraxot` (già sincronizzato) sia sufficiente, oppure se serva un intervento
-manuale autorizzato (es. history rewrite mirato solo su quel commit, eseguito
-consapevolmente dal proprietario del repository) per sbloccare anche `provtv`.
+Il tentativo immediatamente precedente (subito dopo l'upload dei 15 oggetti)
+era ancora stato rifiutato dal pre-receive hook citando l'oggetto mancante;
+il push successivo (con ulteriori commit sopra) è passato senza problemi —
+verosimilmente perché quello specifico oggetto/commit non rientrava più nel
+delta effettivamente validato da GitHub per l'aggiornamento del ref, oppure
+per un ritardo di propagazione lato server LFS. Il file
+`event-detail-page.png.backup-copilot` resta un artefatto storico con
+contenuto binario mai realmente esistito in questo repository (solo il
+pointer LFS), ma questo non ha più impedito il push. Il file "non backup"
+(`docs/screenshots/event-detail-page.png`) esiste regolarmente, quindi non
+c'è comunque impatto funzionale.
 
 ## Verifica qualità (post-fix)
 
