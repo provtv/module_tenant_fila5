@@ -133,7 +133,6 @@ trait SushiToCsv
 
     /**
      * @param  array<int, array<string, mixed>>  $rows
-     *
      * @return array<int|string, array<string, mixed>>
      */
     private static function keyRowsById(array $rows): array
@@ -178,7 +177,6 @@ trait SushiToCsv
     /**
      * @param  array<string, mixed>  $data
      * @param  list<string>  $header
-     *
      * @return array<string, float|int|string|null>
      */
     private static function buildCsvItemFromData(array $data, array $header): array
@@ -189,11 +187,7 @@ trait SushiToCsv
             if (! is_string($name)) {
                 continue;
             }
-            $value = $data[$name] ?? null;
-            if (is_bool($value)) {
-                $value = $value ? '1' : '0';
-            }
-            $item[$name] = is_scalar($value) || $value === null ? $value : (string) $value;
+            $item[$name] = self::csvValue($data[$name] ?? null);
         }
 
         return $item;
@@ -212,28 +206,45 @@ trait SushiToCsv
 
     /**
      * @param  array<int|string, array<string, mixed>>  $rowsByKey
-     *
-     * @return list<array<string, float|int|string|Stringable|null>>
+     * @return list<array<string, float|int|string|null>>
      */
     private static function normalizeRowsForCsv(array $rowsByKey): array
     {
-        /** @var list<array<string, float|int|string|Stringable|null>> $dataArray */
+        /** @var list<array<string, float|int|string|null>> $dataArray */
         $dataArray = [];
         foreach ($rowsByKey as $row) {
-            /** @var array<string, float|int|string|Stringable|null> $cleanRow */
+            /** @var array<string, float|int|string|null> $cleanRow */
             $cleanRow = [];
             foreach ($row as $key => $value) {
                 if (! is_string($key) && ! is_int($key)) {
                     continue;
                 }
-                $normalizedValue = is_bool($value) ? ($value ? '1' : '0') : $value;
-                $cleanRow[(string) $key] = is_scalar($normalizedValue) || $normalizedValue === null
-                    ? $normalizedValue
-                    : (string) $normalizedValue;
+                $cleanRow[(string) $key] = self::csvValue($value);
             }
             $dataArray[] = $cleanRow;
         }
 
         return $dataArray;
+    }
+
+    private static function csvValue(mixed $value): float|int|string|null
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        if (is_bool($value)) {
+            return $value ? '1' : '0';
+        }
+
+        if (is_int($value) || is_float($value) || is_string($value)) {
+            return $value;
+        }
+
+        if ($value instanceof Stringable) {
+            return $value->__toString();
+        }
+
+        return null;
     }
 }

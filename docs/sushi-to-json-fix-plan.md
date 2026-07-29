@@ -2,7 +2,7 @@
 title: "Tenant Module - SushiToJson Traits Fix Plan"
 module: "Tenant"
 type: concept
-tags: [sushi, json, fix, plan]
+tags: [SUSHI, TO, JSON, FIX]
 created: 2026-07-14
 updated: 2026-07-14
 qmd: "sushi to json fix plan"

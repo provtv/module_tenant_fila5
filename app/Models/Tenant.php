@@ -28,7 +28,6 @@ use Modules\Xot\Contracts\ProfileContract;
  * @property bool $is_active
  * @property string|null $logo
  * @property \Carbon\Carbon|null $last_activity_at
- *
  * @property-read string $url
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count

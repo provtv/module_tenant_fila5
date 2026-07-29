@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\File;
 use InvalidArgumentException;
 use Modules\Tenant\Actions\Config\FilterConfigStringKeysAction;
 use Modules\Tenant\Actions\Config\GetTenantFilePathAction;
-use function Safe\file_get_contents;
-use function Safe\json_decode;
-use function Safe\json_encode;
 use Sushi\Sushi;
 use Throwable;
 use Webmozart\Assert\Assert;
+
+use function Safe\file_get_contents;
+use function Safe\json_decode;
+use function Safe\json_encode;
 
 /**
  * Trait SushiToJson.
@@ -139,7 +140,6 @@ trait SushiToJson
      * Utilizza JSON_PRETTY_PRINT e JSON_UNESCAPED_UNICODE per leggibilità.
      *
      * @param  array<int, array<string, mixed>>  $data  Array di record da salvare
-     *
      * @return bool True se il salvataggio è riuscito, false in caso di errore
      */
     public function saveToJson(array $data): bool
@@ -212,14 +212,13 @@ trait SushiToJson
      * Trova l'indice del record nell'array dato un id.
      *
      * @param  array<int, array<string, mixed>>  $rows
-     *
      * @return int|null Indice se trovato, altrimenti null
      */
     protected function findRowIndexById(array $rows, int $id): ?int
     {
         foreach ($rows as $index => $row) {
-            if (is_array($row) && ((int) ($row['id'] ?? 0)) === $id) {
-                return (int) $index;
+            if (is_array($row) && self::intValue($row['id'] ?? null) === $id) {
+                return is_int($index) ? $index : null;
             }
         }
 
@@ -256,7 +255,6 @@ trait SushiToJson
 
     /**
      * @param  array<int, array<string, mixed>>  $data
-     *
      * @return array<int, array<string, mixed>>
      */
     protected function normalizeJsonItems(array $data): array
@@ -287,7 +285,6 @@ trait SushiToJson
 
     /**
      * @param  array<string, mixed>  $schema
-     *
      * @return array<string, mixed>
      */
     protected function normalizeSchemaFields(array $schema): array
@@ -298,7 +295,6 @@ trait SushiToJson
     /**
      * @param  array<int, array<string, mixed>>  $normalizedData
      * @param  array<string, mixed>  $form
-     *
      * @return array<int, array<string, mixed>>
      */
     protected function completeSchemaFields(array $normalizedData, array $form): array
@@ -324,7 +320,6 @@ trait SushiToJson
 
     /**
      * @param  array<int, array<string, mixed>>  $data
-     *
      * @return array<int, array<string, mixed>>
      */
     private function normalizeJsonRecords(array $data): array
@@ -382,9 +377,7 @@ trait SushiToJson
                 continue;
             }
 
-            $rawId = $row['id'] ?? 0;
-            $id = \is_numeric($rawId) ? (int) $rawId : 0;
-            $maxId = max($maxId, $id);
+            $maxId = max($maxId, self::intValue($row['id'] ?? null));
         }
 
         return $maxId;
@@ -419,7 +412,7 @@ trait SushiToJson
         self::applyUpdatingAuditField($model);
 
         $existingData = $model->loadExistingData();
-        $id = (int) ($model->getAttribute('id') ?? 0);
+        $id = self::intValue($model->getAttribute('id'));
         if ($id <= 0) {
             return;
         }
@@ -445,7 +438,7 @@ trait SushiToJson
 
     private static function handleSingleJsonDeleting(self $model): void
     {
-        $id = (int) ($model->getAttribute('id') ?? 0);
+        $id = self::intValue($model->getAttribute('id'));
         if ($id <= 0) {
             return;
         }
@@ -458,5 +451,18 @@ trait SushiToJson
 
         unset($existingData[$index]);
         $model->saveToJson(array_values($existingData));
+    }
+
+    private static function intValue(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value;
+        }
+
+        if ((is_string($value) || is_float($value)) && is_numeric($value)) {
+            return (int) $value;
+        }
+
+        return 0;
     }
 }

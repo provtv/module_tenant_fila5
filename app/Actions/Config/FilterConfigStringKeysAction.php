@@ -12,7 +12,6 @@ final class FilterConfigStringKeysAction
 
     /**
      * @param  array<mixed, mixed>  $config
-     *
      * @return array<string, mixed>
      */
     public function execute(array $config): array

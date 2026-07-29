@@ -6,8 +6,9 @@ namespace Modules\Tenant\Actions\Config;
 
 use InvalidArgumentException;
 use Modules\Tenant\Actions\GetTenantNameAction;
-use function Safe\realpath;
 use Spatie\QueueableAction\QueueableAction;
+
+use function Safe\realpath;
 
 class GetTenantFilePathAction
 {

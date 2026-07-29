@@ -12,10 +12,11 @@ use Exception;
 use Illuminate\Support\Facades\File;
 use Modules\Tenant\Actions\Config\GetTenantFilePathAction;
 use ReflectionObject;
-use function Safe\json_encode;
-use function Safe\unlink;
 use Sushi\Sushi;
 use Webmozart\Assert\Assert;
+
+use function Safe\json_encode;
+use function Safe\unlink;
 
 trait SushiToJsons
 {
@@ -148,7 +149,6 @@ trait SushiToJsons
     /**
      * @param  array<string, mixed>  $schema
      * @param  array<string, mixed>  $json
-     *
      * @return array<string, mixed>
      */
     private function buildRowFromSchema(array $schema, array $json): array

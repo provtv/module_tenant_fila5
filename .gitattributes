@@ -1,3 +1,7 @@
+*.jpg !text !filter !merge !diff
+*.jpeg !text !filter !merge !diff
+*.gif !text !filter !merge !diff
+*.webp !text !filter !merge !diff
 # Path-based git attributes
 # https://www.kernel.org/pub/software/scm/git/docs/gitattributes.html
 
