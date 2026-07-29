@@ -8,6 +8,7 @@ use Modules\Tenant\Models\Tenant;
 use Modules\Tenant\Tests\TestCase;
 use Modules\User\Database\Factories\UserFactory;
 use Modules\User\Models\User;
+use PHPUnit\Framework\Assert;
 use Webmozart\Assert\Assert as WebmozartAssert;
 
 uses(TestCase::class);
@@ -19,10 +20,10 @@ it('can create a tenant', function (): void {
         'database' => 'tenant_test_db',
     ]);
 
-    expect($tenant)->toBeInstanceOf(Tenant::class);
-    expect($tenant->name)->toBe('Test Company');
-    expect($tenant->domain)->toBe('test.company.com');
-    expect($tenant->database)->toBe('tenant_test_db');
+    Assert::assertInstanceOf(Tenant::class, $tenant);
+    Assert::assertSame('Test Company', $tenant->name);
+    Assert::assertSame('test.company.com', $tenant->domain);
+    Assert::assertSame('tenant_test_db', $tenant->database);
 });
 
 it('can create a tenant with settings', function (): void {
@@ -32,8 +33,8 @@ it('can create a tenant with settings', function (): void {
         'settings' => ['locale' => 'it', 'timezone' => 'Europe/Rome'],
     ]);
 
-    expect($tenant->settings)->toBeArray();
-    expect($tenant->settings['locale'] ?? null)->toBe('it');
+    Assert::assertIsArray($tenant->settings);
+    Assert::assertSame('it', $tenant->settings['locale'] ?? null);
 });
 
 it('exposes users relationship', function (): void {
@@ -52,7 +53,7 @@ it('exposes users relationship', function (): void {
 
     $tenant->users()->save($user);
 
-    expect($tenant->users()->whereKey($user->id)->exists())->toBeTrue();
+    Assert::assertTrue($tenant->users()->whereKey($user->id)->exists());
 });
 
 it('can create multiple users for a tenant', function (): void {
@@ -68,13 +69,13 @@ it('can create multiple users for a tenant', function (): void {
         $tenant->users()->save($user);
     }
 
-    expect($tenant->users()->count())->toBe(3);
+    Assert::assertSame(3, $tenant->users()->count());
 });
 
 it('reports active state via isActive', function (): void {
     $active = createTenant(['is_active' => true]);
     $inactive = createTenant(['is_active' => false]);
 
-    expect($active->isActive())->toBeTrue();
-    expect($inactive->isActive())->toBeFalse();
+    Assert::assertTrue($active->isActive());
+    Assert::assertFalse($inactive->isActive());
 });

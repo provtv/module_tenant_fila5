@@ -8,13 +8,14 @@ use Mockery;
 use Modules\Tenant\Actions\Domains\GetDomainsArrayAction;
 use Modules\Tenant\Models\Domain;
 use Modules\Tenant\Tests\TestCase;
+use PHPUnit\Framework\Assert;
 
 uses(TestCase::class);
 
 test('domain model can be instantiated', function (): void {
-    $domain = new Domain();
+    $domain = new Domain;
 
-    expect($domain)->toBeInstanceOf(Domain::class);
+    Assert::assertInstanceOf(Domain::class, $domain);
 });
 
 test('get rows method works correctly', function (): void {
@@ -27,11 +28,10 @@ test('get rows method works correctly', function (): void {
         ]);
     app()->instance(GetDomainsArrayAction::class, $mock);
 
-    $domain = new Domain();
+    $domain = new Domain;
     $rows = $domain->getRows();
 
-    expect($rows)->toBeArray();
-    expect($rows)->toHaveCount(2);
-    expect($rows[0]['name'])->toBe('test-domain.com');
-    expect($rows[1]['name'])->toBe('example.org');
+    Assert::assertCount(2, $rows);
+    Assert::assertSame('test-domain.com', $rows[0]['name']);
+    Assert::assertSame('example.org', $rows[1]['name']);
 });
