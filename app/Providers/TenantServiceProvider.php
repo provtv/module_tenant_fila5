@@ -133,6 +133,7 @@ class TenantServiceProvider extends XotBaseServiceProvider
 
     /**
      * @param  array<string, mixed>  $data
+     *
      * @return array<string, mixed>
      */
     private function mergeModuleConnections(array $data, string $defaultConnection): array
@@ -172,7 +173,10 @@ class TenantServiceProvider extends XotBaseServiceProvider
 
     /**
      * @param  array<string, mixed>  $map
+     *
      * @return array<string, class-string<Model>>
+     *
+     * @SuppressWarnings("PHPMD.ErrorControlOperator")
      */
     private function buildMorphMap(array $map): array
     {
