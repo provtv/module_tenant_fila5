@@ -8,6 +8,7 @@ final class ConfigStringKeyFilter
 {
     /**
      * @param  array<string, mixed>  $config
+     *
      * @return array<string, mixed>
      */
     public static function onlyStringKeys(array $config): array
@@ -26,6 +27,7 @@ final class ConfigStringKeyFilter
 
     /**
      * @param  array<string, mixed>  ...$configs
+     *
      * @return array<string, mixed>
      */
     public static function mergeRecursive(array ...$configs): array

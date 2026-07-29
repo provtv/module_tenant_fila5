@@ -18,6 +18,7 @@ use Modules\Xot\Contracts\ProfileContract;
  * @property bool|null $prefix_indexes
  * @property bool|null $strict
  * @property array<string, mixed>|null $options
+ *
  * @property-read ProfileContract|null $creator
  * @property-read ProfileContract|null $deleter
  * @property-read ProfileContract|null $updater

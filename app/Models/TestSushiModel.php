@@ -42,6 +42,7 @@ use Modules\Xot\Models\Traits\HasXotFactory;
  * @property-read ProfileContract|null $creator
  * @property-read ProfileContract|null $deleter
  * @property-read ProfileContract|null $updater
+ *
  * @property int|null $created_by
  * @property int|null $updated_by
  *

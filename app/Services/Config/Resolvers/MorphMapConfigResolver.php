@@ -33,6 +33,7 @@ class MorphMapConfigResolver implements ConfigResolverInterface
 
     /**
      * @param  string|int|array<string, mixed>|null  $default
+     *
      * @return float|int|string|array<mixed>|null
      */
     public function resolve(string $key, string|int|array|null $default = null): float|int|string|array|null

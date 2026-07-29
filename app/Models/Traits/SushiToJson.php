@@ -10,13 +10,12 @@ use Illuminate\Support\Facades\File;
 use InvalidArgumentException;
 use Modules\Tenant\Actions\Config\FilterConfigStringKeysAction;
 use Modules\Tenant\Actions\Config\GetTenantFilePathAction;
-use Sushi\Sushi;
-use Throwable;
-use Webmozart\Assert\Assert;
-
 use function Safe\file_get_contents;
 use function Safe\json_decode;
 use function Safe\json_encode;
+use Sushi\Sushi;
+use Throwable;
+use Webmozart\Assert\Assert;
 
 /**
  * Trait SushiToJson.
@@ -140,6 +139,7 @@ trait SushiToJson
      * Utilizza JSON_PRETTY_PRINT e JSON_UNESCAPED_UNICODE per leggibilità.
      *
      * @param  array<int, array<string, mixed>>  $data  Array di record da salvare
+     *
      * @return bool True se il salvataggio è riuscito, false in caso di errore
      */
     public function saveToJson(array $data): bool
@@ -212,6 +212,7 @@ trait SushiToJson
      * Trova l'indice del record nell'array dato un id.
      *
      * @param  array<int, array<string, mixed>>  $rows
+     *
      * @return int|null Indice se trovato, altrimenti null
      */
     protected function findRowIndexById(array $rows, int $id): ?int
@@ -255,6 +256,75 @@ trait SushiToJson
 
     /**
      * @param  array<int, array<string, mixed>>  $data
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    protected function normalizeJsonItems(array $data): array
+    {
+        /** @var array<int, array<string, mixed>> $normalizedData */
+        $normalizedData = [];
+
+        foreach ($data as $item) {
+            if (! \is_array($item)) {
+                continue;
+            }
+
+            /** @var array<string, mixed> $normalizedItem */
+            $normalizedItem = [];
+            foreach ($item as $key => $value) {
+                $stringKey = is_string($key) ? $key : (string) $key;
+                if (\is_array($value) || \is_object($value)) {
+                    $value = json_encode($value);
+                }
+                $normalizedItem[$stringKey] = $value;
+            }
+
+            $normalizedData[] = app(FilterConfigStringKeysAction::class)->execute($normalizedItem);
+        }
+
+        return $normalizedData;
+    }
+
+    /**
+     * @param  array<string, mixed>  $schema
+     *
+     * @return array<string, mixed>
+     */
+    protected function normalizeSchemaFields(array $schema): array
+    {
+        return app(FilterConfigStringKeysAction::class)->execute($schema);
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $normalizedData
+     * @param  array<string, mixed>  $form
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    protected function completeSchemaFields(array $normalizedData, array $form): array
+    {
+        /** @var array<int, array<string, mixed>> $completedData */
+        $completedData = [];
+
+        foreach ($normalizedData as $item) {
+            /** @var array<string, mixed> $row */
+            $row = $item;
+            foreach (array_keys($form) as $safeKey) {
+                if (! array_key_exists($safeKey, $row)) {
+                    $row[$safeKey] = null;
+                }
+            }
+
+            ksort($row);
+            $completedData[] = $row;
+        }
+
+        return $completedData;
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $data
+     *
      * @return array<int, array<string, mixed>>
      */
     private function normalizeJsonRecords(array $data): array
@@ -388,70 +458,5 @@ trait SushiToJson
 
         unset($existingData[$index]);
         $model->saveToJson(array_values($existingData));
-    }
-
-    /**
-     * @param  array<int, array<string, mixed>>  $data
-     * @return array<int, array<string, mixed>>
-     */
-    protected function normalizeJsonItems(array $data): array
-    {
-        /** @var array<int, array<string, mixed>> $normalizedData */
-        $normalizedData = [];
-
-        foreach ($data as $item) {
-            if (! \is_array($item)) {
-                continue;
-            }
-
-            /** @var array<string, mixed> $normalizedItem */
-            $normalizedItem = [];
-            foreach ($item as $key => $value) {
-                $stringKey = is_string($key) ? $key : (string) $key;
-                if (\is_array($value) || \is_object($value)) {
-                    $value = json_encode($value);
-                }
-                $normalizedItem[$stringKey] = $value;
-            }
-
-            $normalizedData[] = app(FilterConfigStringKeysAction::class)->execute($normalizedItem);
-        }
-
-        return $normalizedData;
-    }
-
-    /**
-     * @param  array<string, mixed>  $schema
-     * @return array<string, mixed>
-     */
-    protected function normalizeSchemaFields(array $schema): array
-    {
-        return app(FilterConfigStringKeysAction::class)->execute($schema);
-    }
-
-    /**
-     * @param  array<int, array<string, mixed>>  $normalizedData
-     * @param  array<string, mixed>  $form
-     * @return array<int, array<string, mixed>>
-     */
-    protected function completeSchemaFields(array $normalizedData, array $form): array
-    {
-        /** @var array<int, array<string, mixed>> $completedData */
-        $completedData = [];
-
-        foreach ($normalizedData as $item) {
-            /** @var array<string, mixed> $row */
-            $row = $item;
-            foreach (array_keys($form) as $safeKey) {
-                if (! array_key_exists($safeKey, $row)) {
-                    $row[$safeKey] = null;
-                }
-            }
-
-            ksort($row);
-            $completedData[] = $row;
-        }
-
-        return $completedData;
     }
 }

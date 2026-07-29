@@ -12,6 +12,7 @@ final class MergeRecursiveStringKeyConfigAction
 
     /**
      * @param  array<string, mixed>  ...$configs
+     *
      * @return array<string, mixed>
      */
     public function execute(array ...$configs): array

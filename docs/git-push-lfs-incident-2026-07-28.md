@@ -81,17 +81,23 @@ costruire un file diverso che produca lo stesso hash.
   con nuovi commit, `provtv/dev` combacia esattamente con `HEAD` locale:
   verificato con `git fetch provtv dev && git rev-parse provtv/dev`).
 
-Il tentativo immediatamente precedente (subito dopo l'upload dei 15 oggetti)
-era ancora stato rifiutato dal pre-receive hook citando l'oggetto mancante;
-il push successivo (con ulteriori commit sopra) è passato senza problemi —
-verosimilmente perché quello specifico oggetto/commit non rientrava più nel
-delta effettivamente validato da GitHub per l'aggiornamento del ref, oppure
-per un ritardo di propagazione lato server LFS. Il file
-`event-detail-page.png.backup-copilot` resta un artefatto storico con
-contenuto binario mai realmente esistito in questo repository (solo il
-pointer LFS), ma questo non ha più impedito il push. Il file "non backup"
-(`docs/screenshots/event-detail-page.png`) esiste regolarmente, quindi non
-c'è comunque impatto funzionale.
+**Causa reale del successivo push riuscito** (non una coincidenza di timing o
+propagazione lato server): il 16° oggetto è stato effettivamente recuperato,
+in una sessione parallela sullo stesso checkout locale, da un backup del
+filesystem — `/media/zorin/nas06/var/www/_bases/base_fixcity_fila5_20260618-1722/
+laravel/Modules/Tenant/docs/screenshots/event-detail-page.png` (snapshot
+2026-06-18). Verifica: `sha256sum` di quel file combacia **esattamente**
+con l'oid richiesto (`5e077f4fd10aa1bb7b4eeaa5d4673f7148ecc63ac66c4d1e14001088ee7753e1`)
+e la size combacia (121507 byte) — contenuto byte-per-byte identico, non una
+ricostruzione. Backfillato in `.git/lfs/objects/5e/07/5e077f4f...` (stessa
+struttura degli altri 15) e caricato con `git lfs push provtv --all` →
+16/16 oggetti presenti. Poiché `.git/lfs/objects/` è condiviso da tutte le
+sessioni che operano su questo stesso checkout, non serve più
+`lfs.allowincompletepush` né alcuna assunzione su "delta diversi validati da
+GitHub": tutti e 16 gli oggetti richiesti esistono ora davvero, sia in locale
+sia sul remote. Il file "non backup" (`docs/screenshots/event-detail-page.png`)
+esiste comunque regolarmente nel repository, quindi nessun impatto
+funzionale in ogni caso.
 
 ## Verifica qualità (post-fix)
 
