@@ -29,7 +29,7 @@ jobs:
           npm install --prefer-offline
           npm run build:share-card -- --module "Tenant" --version "${{ steps.release_info.outputs.version }}"
       - name: Archive marketing kit
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: "Tenant-marketing-kit"
           path: |
